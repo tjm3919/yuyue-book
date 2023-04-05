@@ -1,0 +1,118 @@
+// store.ts
+import { InjectionKey } from 'vue'
+import { createStore, useStore as baseUseStore, Store } from 'vuex'
+
+// import {defineStore} from 'pinia';
+// import {createPinia} from 'pinia';
+// // 引入pinia的持久化存储插件
+// import piniaPersist from 'pinia-plugin-persist';
+
+export interface State {
+  id: string,
+  count: number,
+  collapse: boolean,
+  userInfo: {
+    id:number,
+    username: string,
+    isValidate: boolean,
+    usertype: number, // 用户类型 1-管理员 2-普通用户
+    token: string 
+  }
+}
+
+export const key: InjectionKey<Store<State>> = Symbol()
+
+export const store = createStore<State>({
+  state: {
+    id: 'GlobalState',
+    count: 0,
+    collapse: false,
+    userInfo: {
+      id: 0,
+      username: "",
+      isValidate:false,
+      usertype: 2,
+      token:""
+    }
+  },
+  // actions即可以是同步函数也可以是异步函数
+  actions: {
+    setUserInfo(user:any) {
+      let v = this.state.userInfo;
+      if(user==null){
+				localStorage.removeItem('GlobalState')
+				console.log("清空用户信息")
+        v.id=0
+				v.username=""
+				v.isValidate=false
+        v.usertype=2
+				v.token=""
+			}else{
+				console.log("更新用户状态.......用户名:",user)
+        v.id=user.id
+				v.username=user.username
+				v.isValidate=true
+        v.usertype=user.usertype
+				v.token=user.token
+        //console.log(JSON.stringify(this),"======================")
+				sessionStorage.setItem('GlobalState', JSON.stringify(this))
+			}
+    }
+  },
+  mutations:{
+    setUserInfo(state:State ,user:any) {
+      let v = state.userInfo
+      if(user==null){
+				localStorage.removeItem('GlobalState')
+				console.log("清空用户信息")
+        v.id=0
+				v.username=""
+				v.isValidate=false
+        v.usertype=2
+				v.token=""
+			}else{
+				console.log("更新用户状态.......用户名:",user)
+        v.id=user.id
+				v.username=user.username
+				v.token=user.token
+				v.isValidate=true
+        v.usertype=user.usertype
+        //console.log(JSON.stringify(this),"======================")
+				sessionStorage.setItem('GlobalState', JSON.stringify(this))
+			}
+    },
+    setCount(state:State, count:number){
+      state.count = count;
+    },
+    setCollapse:(state:State,collapse:boolean)=>{
+      state.collapse = collapse;
+    },
+  },
+  getters:{
+    getCount(state:State){
+      return state.count;
+    },
+    getCollapse:(state:State)=>{
+      return state.collapse;
+    }
+  },
+  // 持久化
+  // persist: {
+  //   enabled: true,
+  //   strategies: [
+  //     {
+  //       // 自定义key
+  //       key: 'GlobalState',
+  //       // 自定义存储方式，默认sessionStorage
+  //       //storage: localStorage,
+  //       // 指定要持久化的数据，默认所有 state 都会进行缓存，可以通过 paths 指定要持久化的字段，其他的则不会进行持久化。
+  //       //paths: ['curUsername'],
+  //     }
+  //   ]
+  // }
+})
+
+// 定义自己的 `useStore` 组合式函数
+export function useStore () {
+  return baseUseStore(key)
+}

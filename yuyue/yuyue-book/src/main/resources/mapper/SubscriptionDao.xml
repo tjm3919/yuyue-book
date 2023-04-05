@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trkj.yuyuebook.dao.SubscriptionDao">
+
+    <resultMap type="com.trkj.yuyuebook.entity.SubscriptionEntity" id="SubscriptionEntityMap">
+        <result property="subId" column="sub_id" jdbcType="INTEGER"/>
+        <result property="suId" column="su_id" jdbcType="INTEGER"/>
+        <result property="woId" column="wo_id" jdbcType="INTEGER"/>
+        <result property="subTime" column="sub_time" jdbcType="TIMESTAMP"/>
+        <result property="subOther" column="sub_other" jdbcType="VARCHAR"/>
+        <result property="subState" column="sub_state" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="SubscriptionEntityMap">
+        select
+          sub_id, su_id, wo_id, sub_time, sub_other, sub_state
+        from subscription
+        where sub_id = #{subId}
+    </select>
+
+    <!--根据用户id和作品id查询订阅表-->
+    <select id="queryBysuIdwoId" resultMap="SubscriptionEntityMap">
+        select sub_id, su_id, wo_id, sub_time, sub_other, sub_state from subscription where su_id=#{suId} and wo_id=#{woId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAll" resultMap="SubscriptionEntityMap">
+        select
+          sub_id, su_id, wo_id, sub_time, sub_other, sub_state
+        from subscription
+        <where>
+            <if test="subId != null">
+                and sub_id = #{subId}
+            </if>
+            <if test="suId != null">
+                and su_id = #{suId}
+            </if>
+            <if test="woId != null">
+                and wo_id = #{woId}
+            </if>
+            <if test="subTime != null">
+                and sub_time = #{subTime}
+            </if>
+            <if test="subOther != null and subOther != ''">
+                and sub_other = #{subOther}
+            </if>
+            <if test="subState != null">
+                and sub_state = #{subState}
+            </if>
+        </where>
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from subscription
+        <where>
+            <if test="subId != null">
+                and sub_id = #{subId}
+            </if>
+            <if test="suId != null">
+                and su_id = #{suId}
+            </if>
+            <if test="woId != null">
+                and wo_id = #{woId}
+            </if>
+            <if test="subTime != null">
+                and sub_time = #{subTime}
+            </if>
+            <if test="subOther != null and subOther != ''">
+                and sub_other = #{subOther}
+            </if>
+            <if test="subState != null">
+                and sub_state = #{subState}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="subId" useGeneratedKeys="true">
+        insert into subscription(su_id, wo_id, sub_time, sub_other, sub_state)
+        values (#{suId}, #{woId}, #{subTime}, #{subOther}, #{subState})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="subId" useGeneratedKeys="true">
+        insert into subscription(su_id, wo_id, sub_time, sub_other, sub_state)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.suId}, #{entity.woId}, #{entity.subTime}, #{entity.subOther}, #{entity.subState})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="subId" useGeneratedKeys="true">
+        insert into subscription(su_id, wo_id, sub_time, sub_other, sub_state)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.suId}, #{entity.woId}, #{entity.subTime}, #{entity.subOther}, #{entity.subState})
+        </foreach>
+        on duplicate key update
+        su_id = values(su_id),
+        wo_id = values(wo_id),
+        sub_time = values(sub_time),
+        sub_other = values(sub_other),
+        sub_state = values(sub_state)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update subscription
+        <set>
+            <if test="suId != null">
+                su_id = #{suId},
+            </if>
+            <if test="woId != null">
+                wo_id = #{woId},
+            </if>
+            <if test="subTime != null">
+                sub_time = #{subTime},
+            </if>
+            <if test="subOther != null and subOther != ''">
+                sub_other = #{subOther},
+            </if>
+            <if test="subState != null">
+                sub_state = #{subState}
+            </if>
+        </set>
+        where sub_id = #{subId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from subscription where sub_id = #{subId}
+    </delete>
+
+</mapper>
+

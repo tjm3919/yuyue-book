@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trkj.yuyueuser.dao.SysUserDao">
+
+    <resultMap type="com.trkj.yuyueuser.entity.SysUserEntity" id="SysUserEntityMap">
+        <result property="suId" column="su_id" jdbcType="INTEGER"/>
+        <result property="suName" column="su_name" jdbcType="VARCHAR"/>
+        <result property="suNickname" column="su_nickname" jdbcType="VARCHAR"/>
+        <result property="suType" column="su_type" jdbcType="VARCHAR"/>
+        <result property="suPhone" column="su_phone" jdbcType="VARCHAR"/>
+        <result property="suState" column="su_state" jdbcType="INTEGER"/>
+        <result property="saId" column="sa_id" jdbcType="INTEGER"/>
+        <result property="sumNum" column="sum_num" jdbcType="INTEGER"/>
+        <result property="suCreateTime" column="su_create_time" jdbcType="TIMESTAMP"/>
+        <result property="suUpdateTime" column="su_update_time" jdbcType="TIMESTAMP"/>
+        <association property="sysAccountDto" resultMap="SysAccountEntityMap"/>
+        <collection property="worksDtos" resultMap="WorksEntityMap"/>
+        <collection property="subscriptionDtos" resultMap="SubscriptionEntityMap"/>
+        <collection property="loginLogDtos" resultMap="LoginLogEntityMap"/>
+    </resultMap>
+
+    <!--账号-->
+    <resultMap type="com.trkj.dto.account.SysAccountDto" id="SysAccountEntityMap">
+        <result property="saId" column="sa_id" jdbcType="INTEGER"/>
+        <result property="saName" column="sa_name" jdbcType="VARCHAR"/>
+        <result property="saPassword" column="sa_password" jdbcType="VARCHAR"/>
+        <result property="saType" column="sa_type" jdbcType="INTEGER"/>
+        <result property="saState" column="sa_state" jdbcType="INTEGER"/>
+        <result property="isExpired" column="Is_expired" jdbcType="INTEGER"/>
+        <result property="saCreateTime" column="sa_create_time" jdbcType="TIMESTAMP"/>
+        <result property="saUpdateTime" column="sa_update_time" jdbcType="TIMESTAMP"/>
+        <result property="suId" column="su_id" jdbcType="INTEGER"/>
+    </resultMap>
+    <!--图书订阅-->
+    <resultMap type="com.trkj.dto.book.SubscriptionDto" id="SubscriptionEntityMap">
+        <result property="subId" column="sub_id" jdbcType="INTEGER"/>
+        <result property="suId" column="su_id" jdbcType="INTEGER"/>
+        <result property="woId" column="wo_id" jdbcType="INTEGER"/>
+        <result property="subTime" column="sub_time" jdbcType="TIMESTAMP"/>
+        <result property="subOther" column="sub_other" jdbcType="VARCHAR"/>
+        <result property="subState" column="sub_state" jdbcType="INTEGER"/>
+    </resultMap>
+    <!--登录日志-->
+    <resultMap type="com.trkj.dto.log.LoginLogDto" id="LoginLogEntityMap">
+        <result property="llId" column="ll_id" jdbcType="INTEGER"/>
+        <result property="suId" column="su_id" jdbcType="INTEGER"/>
+        <result property="saId" column="sa_id" jdbcType="INTEGER"/>
+        <result property="llUpTime" column="ll_up_time" jdbcType="TIMESTAMP"/>
+        <result property="llOutTime" column="ll_out_time" jdbcType="TIMESTAMP"/>
+        <result property="llIp" column="ll_ip" jdbcType="VARCHAR"/>
+        <result property="llBrowserType" column="ll_browser_type" jdbcType="VARCHAR"/>
+        <result property="llClientsideType" column="ll_clientside_type" jdbcType="VARCHAR"/>
+        <result property="llLoginType" column="ll_login_type" jdbcType="INTEGER"/>
+    </resultMap>
+    <!--作品-->
+    <resultMap type="com.trkj.dto.book.WorksDto" id="WorksEntityMap">
+        <result property="woId" column="wo_id" jdbcType="INTEGER"/>
+        <result property="woTitle" column="wo_title" jdbcType="VARCHAR"/>
+        <result property="summary" column="summary" jdbcType="VARCHAR"/>
+        <result property="suId" column="su_id" jdbcType="INTEGER"/>
+        <result property="readNum" column="read_num" jdbcType="INTEGER"/>
+        <result property="sectionNum" column="section_num" jdbcType="INTEGER"/>
+        <result property="appraiseNum" column="appraise_num" jdbcType="INTEGER"/>
+        <result property="likesNum" column="likes_num" jdbcType="INTEGER"/>
+        <result property="protagonistName" column="protagonist_name" jdbcType="VARCHAR"/>
+        <result property="supportName" column="support_name" jdbcType="VARCHAR"/>
+        <result property="worksType" column="works_type" jdbcType="VARCHAR"/>
+        <result property="worksCreateTime" column="works_create_time" jdbcType="TIMESTAMP"/>
+        <result property="boId" column="bo_id" jdbcType="INTEGER"/>
+        <result property="boIntegral" column="bo_integral" jdbcType="INTEGER"/>
+        <result property="woState" column="wo_state" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <!--su_id, su_name, su_nickname, su_type, su_phone, su_state, sa_id, sum_num, su_create_time, su_update_time-->
+    <select id="queryById" resultMap="SysUserEntityMap">
+        select * from sys_user su
+             left join sys_account sa on su.sa_id=sa.sa_id
+             left join subscription sub on sub.su_id=su.su_id
+             left join login_log ll on ll.su_id=su.su_id
+             left join works w on w.su_id=su.su_id
+        where su.su_id = #{suId} and su.su_state=1
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllX" resultMap="SysUserEntityMap">
+        select * from sys_user su
+            left join sys_account sa on su.sa_id=sa.sa_id
+            left join subscription sub on sub.su_id=su.su_id
+            left join login_log ll on ll.su_id=su.su_id
+            left join works w on w.su_id=su.su_id
+        <where>
+            <if test="suId != null">
+                and su.su_id = #{suId}
+            </if>
+            <if test="suName != null and suName != ''">
+                and su.su_name = #{suName}
+            </if>
+            <if test="suNickname != null and suNickname != ''">
+                and su.su_nickname = #{suNickname}
+            </if>
+            <if test="suType != null and suType != ''">
+                and su.su_type = #{suType}
+            </if>
+            <if test="suPhone != null and suPhone != ''">
+                and su.su_phone = #{suPhone}
+            </if>
+            <if test="suState != null">
+                and su.su_state = #{suState}
+            </if>
+            <if test="saId != null">
+                and su.sa_id = #{saId}
+            </if>
+            <if test="sumNum != null">
+                and su.sum_num = #{sumNum}
+            </if>
+            <if test="suCreateTime != null">
+                and su.su_create_time = #{suCreateTime}
+            </if>
+            <if test="suUpdateTime != null">
+                and su.su_update_time = #{suUpdateTime}
+            </if>
+        </where>
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAll" resultMap="SysUserEntityMap">
+        select * from sys_user
+        <where>
+            <if test="suId != null">
+                and su_id = #{suId}
+            </if>
+            <if test="suName != null and suName != ''">
+                and su_name = #{suName}
+            </if>
+            <if test="suNickname != null and suNickname != ''">
+                and su_nickname = #{suNickname}
+            </if>
+            <if test="suType != null and suType != ''">
+                and su_type = #{suType}
+            </if>
+            <if test="suPhone != null and suPhone != ''">
+                and su_phone = #{suPhone}
+            </if>
+            <if test="suState != null">
+                and su_state = #{suState}
+            </if>
+            <if test="saId != null">
+                and sa_id = #{saId}
+            </if>
+            <if test="sumNum != null">
+                and sum_num = #{sumNum}
+            </if>
+            <if test="suCreateTime != null">
+                and su_create_time = #{suCreateTime}
+            </if>
+            <if test="suUpdateTime != null">
+                and su_update_time = #{suUpdateTime}
+            </if>
+        </where>
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from sys_user
+        <where>
+            <if test="suId != null">
+                and su_id = #{suId}
+            </if>
+            <if test="suName != null and suName != ''">
+                and su_name = #{suName}
+            </if>
+            <if test="suNickname != null and suNickname != ''">
+                and su_nickname = #{suNickname}
+            </if>
+            <if test="suType != null and suType != ''">
+                and su_type = #{suType}
+            </if>
+            <if test="suPhone != null and suPhone != ''">
+                and su_phone = #{suPhone}
+            </if>
+            <if test="suState != null">
+                and su_state = #{suState}
+            </if>
+            <if test="saId != null">
+                and sa_id = #{saId}
+            </if>
+            <if test="sumNum != null">
+                and sum_num = #{sumNum}
+            </if>
+            <if test="suCreateTime != null">
+                and su_create_time = #{suCreateTime}
+            </if>
+            <if test="suUpdateTime != null">
+                and su_update_time = #{suUpdateTime}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="suId" useGeneratedKeys="true">
+        insert into sys_user(su_name, su_nickname, su_type, su_phone, su_state, sa_id, sum_num, su_create_time, su_update_time)
+        values (#{suName}, #{suNickname}, #{suType}, #{suPhone}, #{suState}, #{saId}, #{sumNum}, #{suCreateTime}, #{suUpdateTime})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="suId" useGeneratedKeys="true">
+        insert into sys_user(su_name, su_nickname, su_type, su_phone, su_state, sa_id, sum_num, su_create_time, su_update_time)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.suName}, #{entity.suNickname}, #{entity.suType}, #{entity.suPhone}, #{entity.suState}, #{entity.saId}, #{entity.sumNum}, #{entity.suCreateTime}, #{entity.suUpdateTime})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="suId" useGeneratedKeys="true">
+        insert into sys_user(su_name, su_nickname, su_type, su_phone, su_state, sa_id, sum_num, su_create_time, su_update_time)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.suName}, #{entity.suNickname}, #{entity.suType}, #{entity.suPhone}, #{entity.suState}, #{entity.saId}, #{entity.sumNum}, #{entity.suCreateTime}, #{entity.suUpdateTime})
+        </foreach>
+        on duplicate key update
+        su_name = values(su_name),
+        su_nickname = values(su_nickname),
+        su_type = values(su_type),
+        su_phone = values(su_phone),
+        su_state = values(su_state),
+        sa_id = values(sa_id),
+        sum_num = values(sum_num),
+        su_create_time = values(su_create_time),
+        su_update_time = values(su_update_time)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update sys_user
+        <set>
+            <if test="suName != null and suName != ''">
+                su_name = #{suName},
+            </if>
+            <if test="suNickname != null and suNickname != ''">
+                su_nickname = #{suNickname},
+            </if>
+            <if test="suType != null and suType != ''">
+                su_type = #{suType},
+            </if>
+            <if test="suPhone != null and suPhone != ''">
+                su_phone = #{suPhone},
+            </if>
+            <if test="suState != null">
+                su_state = #{suState},
+            </if>
+            <if test="saId != null">
+                sa_id = #{saId},
+            </if>
+            <if test="sumNum != null">
+                sum_num = #{sumNum},
+            </if>
+            <if test="suCreateTime != null">
+                su_create_time = #{suCreateTime},
+            </if>
+            <if test="suUpdateTime != null">
+                su_update_time = #{suUpdateTime},
+            </if>
+        </set>
+        where su_id = #{suId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from sys_user where su_id = #{suId}
+    </delete>
+
+</mapper>
+

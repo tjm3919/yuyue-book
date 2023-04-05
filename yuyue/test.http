@@ -1,0 +1,113 @@
+### 账号登录 POST http://localhost:8084/jwt/validateAccount  8111
+POST http://localhost:8084/jwt/validateAccount
+Content-Type: application/json # 代表发送端（客户端|服务器）发送的实体数据的数据类型。
+Accept: application/json # 代表发送端（客户端）希望接受的数据类型。
+
+{
+  "saName": "admin",
+  "saPassword": "123456",
+  "logDto": {
+    "suId": 1,
+    "saId": 1001,
+    "llUpTime": "2023-1-25 11:11:11",
+    "llOutTime": "2023-1-25 12:12:12",
+    "llIp": "登录IP",
+    "llBrowserType": "浏览器类型",
+    "llClientsideType": "客户端类型",
+    "llLoginType": 1
+  }
+}
+
+> {% client.global.set("token", response.body.data.token); %}
+
+### 退出登录
+POST http://localhost:8084/jwt/loginout?said=1001&saname=admin
+jwttoken: {{token}}
+
+### 新增账号、用户 saType(账号类型 1-管理员账号 2-用户账号 3-作者账号) suType(用户类型 超级管理员 普通管理员 作者 读者)
+POST http://localhost:8084/jwt/add
+Content-Type: application/json
+
+{
+  "saName": "lll22",
+  "saPassword": "123456",
+  "saType": 2,
+  "saState": 1,
+  "isExpired": 1,
+  "suId": 0,
+  "sysUserDto": {
+    "suName": "LLL22",
+    "sumNum": 10,
+    "suNickname": "昵称22",
+    "suPhone": "18212231212",
+    "suType": "用户",
+    "suState": 1,
+    "saId": 0
+  }
+}
+
+### 新增作者账号、用户 saType(账号类型 1-管理员账号 2-用户账号 3-作者账号) suType(用户类型 超级管理员 普通管理员 作者 读者)
+POST http://localhost:8084/jwt/add
+Content-Type: application/json
+
+{
+  "saName": "李小白",
+  "saPassword": "123456",
+  "saType": 3,
+  "saState": 2,
+  "isExpired": 1,
+  "suId": 0,
+  "sysUserDto": {
+    "suName": "小李子",
+    "sumNum": 100,
+    "suNickname": "李子",
+    "suPhone": "18222512511",
+    "suType": "作者",
+    "suState": 2,
+    "saId": 0
+  },
+  "approvalDto": {
+    "sysId": 1,
+    "apEvent": "作者注册",
+    "apType": "账号申请"
+  }
+}
+
+### 重置密码
+PUT http://localhost:8084/jwt/edit?said=1001
+Content-Type: application/json
+
+{
+  "saId": 1001,
+  "saPassword": "123456"
+}
+
+### 分页查询账号信息 saType(1-管理员账号 2-用户账号 3-作者账号) saState( 0-禁用 1-正常 2-审批中)
+GET http://localhost:8084/jwt/queryByPage?currentPage=1&pageSize=10&said=1001
+Content-Type: application/json
+jwttoken: {{token}}
+
+{
+  "saState": 1,
+  "saType": 3
+}
+
+### 根据账号id查询账号信息
+GET http://localhost:8084/jwt/queryById/1001?said=1001
+jwttoken: {{token}}
+
+
+###
+
+
+
+
+
+
+
+
+
+
+
+
+

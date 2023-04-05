@@ -1,0 +1,144 @@
+### 新增作品 作品标签（worksTagDtos）
+POST http://localhost:8086/works/add?said=1009
+Content-Type: application/json
+jwttoken: {{token}}
+
+{
+  "woTitle": "十万个冷笑话",
+  "summary": "有十万个冷笑话",
+  "suId": 9,
+  "boId": 1,
+  "readNum": 0,
+  "sectionNum": 0,
+  "appraiseNum": 0,
+  "likesNum": 0,
+  "protagonistName": "主角名",
+  "supportName": "配角名",
+  "worksType": "作品类型",
+  "boIntegral": 10,
+  "woState": 1,
+  "worksContentDto": [
+    {
+      "wcTitle": "为什么1",
+      "wcContent": "章节内容1",
+      "wcChapterHits": 0,
+      "wcState": 1
+    },
+    {"wcTitle": "为什么2",
+      "wcContent": "章节内容2",
+      "wcChapterHits": 0,
+      "wcState": 1
+    }
+  ],
+  "worksTagDtos": [
+    {"wtId": 1},
+    {"wtId": 2}
+  ]
+}
+
+### 修改图书 启用、禁用图书
+PUT http://localhost:8086/works/edit
+Content-Type: application/json
+jwttoken: {{token}}
+
+{
+  "woId": 28,
+  "woTitle": "十万个冷笑话",
+  "summary": "有十万个冷笑话啊",
+  "suId": 9,
+  "boId": 1,
+  "readNum": 0,
+  "sectionNum": 0,
+  "appraiseNum": 0,
+  "likesNum": 0,
+  "woState": 1,
+  "protagonistName": "主角名",
+  "supportName": "配角名c",
+  "worksType": "作品类型",
+  "boIntegral": 10
+}
+
+### 根据图书id查询单个图书
+GET http://localhost:8086/works/queryById/28?said=1001
+jwttoken: {{token}}
+
+### 分页查询图书 woState(0-下架 1-正常)
+GET http://localhost:8086/works/queryByPage?currentPage=1&pageSize=20&said=1001
+Content-Type: application/json
+jwttoken: {{token}}
+
+{
+  "suId": 1,
+  "woState": 1
+}
+
+### 查看图书章节列表信息 wcState(0-删除 1-正常（已发布）2-未发布)
+GET http://localhost:8086/worksContent/queryByPage?currentPage=1&pageSize=10&said=1001
+Content-Type: application/json
+jwttoken: {{token}}
+
+{
+  "woId": 28,
+  "wcState": 1
+}
+
+### 按标题、主角名、配角名、主角与配角名混合 模糊查询 worksType-图书类型 protagonistName-主角名 supportName-配角名
+GET http://localhost:8086/works/queryByType?said=1001
+Content-Type: application/json
+jwttoken: {{token}}
+
+{
+  "worksType": "军事",
+  "protagonistName": "Masuda",
+  "supportName": "暗"
+}
+
+### 查询订阅前十的图书
+GET http://localhost:8086/works/queryByTopten?said=1001
+jwttoken: {{token}}
+
+### 新增图书章节
+POST http://localhost:8086/worksContent/add?said=1001
+Content-Type: application/json
+jwttoken: {{token}}
+
+{
+  "woId": 25,
+  "wcTitle": "为什么4",
+  "wcContent": "章节内容3",
+  "wcChapterHits": 0,
+  "wcState": 1
+}
+
+### 修改图书章节内容
+PUT http://localhost:8086/worksContent/edit?said=1001
+Content-Type: application/json
+jwttoken: {{token}}
+
+{
+  "wcId": 9,
+  "wcContent": "章节内容333"
+}
+
+### 删除图书章节（章节发布后不允许删除）
+DELETE http://localhost:8086/worksContent/deleteById/12?said=1001
+jwttoken: {{token}}
+
+### 订阅图书
+POST http://localhost:8086/subscription/add?said=1001
+Content-Type: application/json
+jwttoken: {{token}}
+
+{
+  "suId": 3,
+  "woId": 3,
+  "subState": 1
+}
+
+### 取消订阅
+DELETE http://localhost:8086/subscription/deleteById/10?said=1001
+jwttoken: {{token}}
+
+
+
+

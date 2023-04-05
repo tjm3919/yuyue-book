@@ -1,0 +1,30 @@
+### 审批分页查询
+GET http://localhost:8096/approval/queryByPage?currentPage=1&pageSize=100&said=1001
+Content-Type: application/json
+jwttoken: {{token}}
+
+{
+  "saId": 1
+}
+
+### 根据审批id查询一个审批
+GET http://localhost:8096/approval/queryById/11?said=1001
+jwttoken: {{token}}
+
+### 修改审批 apState（0-删除 1-未审批 2通过 3拒绝）
+PUT http://localhost:8096/approval/edit?said=1001
+Content-Type: application/json
+jwttoken: {{token}}
+
+{
+  "apId": 12,
+  "apState": 3
+}
+
+###
+
+
+
+
+
+

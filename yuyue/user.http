@@ -1,0 +1,34 @@
+### 分页查询用户信息
+GET http://localhost:8092/sysUser/queryByPage?currentPage=1&pageSize=10&said=1001
+Content-Type: application/json # 代表发送端（客户端|服务器）发送的实体数据的数据类型。
+jwttoken: {{token}}
+
+{
+  "suState": 1
+}
+
+### 分页查询用户详情信息
+GET http://localhost:8092/sysUser/queryByPageX?currentPage=1&pageSize=10&said=1001
+Content-Type: application/json
+jwttoken: {{token}}
+
+{
+  "suState": 1
+}
+
+### 根据用户id查询用户信息
+GET http://localhost:8092/sysUser/queryById/3?said=1001
+jwttoken: {{token}}
+
+### 启用、禁用用户、作者 suState(0-禁用 1-正常)
+PUT http://localhost:8092/sysUser/edit?said=1001
+Content-Type: application/json
+jwttoken: {{token}}
+
+{
+  "suId": 3,
+  "suState": 0
+}
+
+###
+

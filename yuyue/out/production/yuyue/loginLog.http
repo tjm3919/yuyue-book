@@ -1,0 +1,24 @@
+### 日志分页查询 llLoginType(1-管理员 2-用户 3-作者)
+GET http://localhost:8082/loginLog/queryByPage?currentPage=1&pageSize=10&said=1001
+Content-Type: application/json
+jwttoken: {{token}}
+
+{
+  "llLoginType": 1
+}
+
+### 新增日志
+POST http://localhost:8082/loginLog/add?said=1001
+Content-Type: application/json
+jwttoken: {{token}}
+
+{
+  "suId": 1,
+  "saId": 1001,
+  "llUpTime": "2023-1-25 11:11:11",
+  "llOutTime": "2023-1-25 12:12:12",
+  "llIp": "登录IP",
+  "llBrowserType": "浏览器类型",
+  "llClientsideType": "客户端类型",
+  "llLoginType": 2
+}

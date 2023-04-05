@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/yuyue-api/pom.xml" />
+        <option value="$PROJECT_DIR$/yuyue-jwt/pom.xml" />
+        <option value="$PROJECT_DIR$/yuyue-redis/pom.xml" />
+        <option value="$PROJECT_DIR$/yuyue-book/pom.xml" />
+        <option value="$PROJECT_DIR$/yuyue-message/pom.xml" />
+        <option value="$PROJECT_DIR$/yuyue-log/pom.xml" />
+        <option value="$PROJECT_DIR$/yuyue-gateway/pom.xml" />
+        <option value="$PROJECT_DIR$/yuyue-remark/pom.xml" />
+        <option value="$PROJECT_DIR$/yuyue-user/pom.xml" />
+        <option value="$PROJECT_DIR$/yuyue-integral/pom.xml" />
+        <option value="$PROJECT_DIR$/yuyue-approval/pom.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_13" default="true" project-jdk-name="azul-13" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
+</project>

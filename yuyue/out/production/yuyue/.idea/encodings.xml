@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding" defaultCharsetForPropertiesFiles="UTF-8">
+    <file url="file://$PROJECT_DIR$/yuyue-api/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yuyue-api/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yuyue-approval/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yuyue-approval/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yuyue-book/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yuyue-book/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yuyue-gateway/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yuyue-gateway/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yuyue-integral/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yuyue-integral/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yuyue-jwt/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yuyue-jwt/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yuyue-log/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yuyue-log/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yuyue-message/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yuyue-message/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yuyue-mq-impl/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yuyue-mq-impl/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yuyue-redis/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yuyue-redis/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yuyue-remark/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yuyue-remark/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yuyue-user/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yuyue-user/src/main/resources" charset="UTF-8" />
+    <file url="PROJECT" charset="UTF-8" />
+  </component>
+</project>

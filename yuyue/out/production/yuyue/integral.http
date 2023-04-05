@@ -1,0 +1,51 @@
+### 新增积分详情
+POST http://localhost:8094/integral/add?said=1001
+Content-Type: application/json
+jwttoken: {{token}}
+
+{
+  "suId": 1,
+  "amType": "用户注册",
+  "amNum": 10,
+  "sysId": 0,
+  "woId": 0,
+  "inCreateTime": ""
+}
+
+### 分页查询积分详情
+GET http://localhost:8094/integral/queryByPage?currentPage=1&pageSize=10&said=1001
+Content-Type: application/json
+jwttoken: {{token}}
+
+{
+  "suId": 1
+}
+
+### 管理员赠送积分
+POST http://localhost:8094/integral/add?said=1001
+Content-Type: application/json
+jwttoken: {{token}}
+
+{
+  "suId": 3,
+  "amType": "管理员赠送",
+  "amNum": 10,
+  "sysId": 1,
+  "woId": 0
+}
+
+### 阅读图书获取积分
+POST http://localhost:8094/integral/add?said=1001
+Content-Type: application/json
+jwttoken: {{token}}
+
+{
+  "suId": 3,
+  "amType": "阅读图书",
+  "amNum": 2,
+  "sysId": 1,
+  "woId": 1
+}
+
+
+

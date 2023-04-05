@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trkj.yuyueremark.dao.RemarkDao">
+
+    <resultMap type="com.trkj.yuyueremark.entity.RemarkEntity" id="RemarkEntityMap">
+        <result property="reId" column="re_id" jdbcType="INTEGER"/>
+        <result property="suId" column="su_id" jdbcType="INTEGER"/>
+        <result property="woId" column="wo_id" jdbcType="INTEGER"/>
+        <result property="reContent" column="re_content" jdbcType="VARCHAR"/>
+        <result property="reTime" column="re_time" jdbcType="TIMESTAMP"/>
+        <result property="reState" column="re_state" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="RemarkEntityMap">
+        select
+          re_id, su_id, wo_id, re_content, re_time, re_state
+        from remark
+        where re_id = #{reId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAll" resultMap="RemarkEntityMap">
+        select
+          re_id, su_id, wo_id, re_content, re_time, re_state
+        from remark
+        <where>
+            <if test="reId != null">
+                and re_id = #{reId}
+            </if>
+            <if test="suId != null">
+                and su_id = #{suId}
+            </if>
+            <if test="woId != null">
+                and wo_id = #{woId}
+            </if>
+            <if test="reContent != null and reContent != ''">
+                and re_content = #{reContent}
+            </if>
+            <if test="reTime != null">
+                and re_time = #{reTime}
+            </if>
+            <if test="reState != null">
+                and re_state = #{reState}
+            </if>
+        </where>
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from remark
+        <where>
+            <if test="reId != null">
+                and re_id = #{reId}
+            </if>
+            <if test="suId != null">
+                and su_id = #{suId}
+            </if>
+            <if test="woId != null">
+                and wo_id = #{woId}
+            </if>
+            <if test="reContent != null and reContent != ''">
+                and re_content = #{reContent}
+            </if>
+            <if test="reTime != null">
+                and re_time = #{reTime}
+            </if>
+            <if test="reState != null">
+                and re_state = #{reState}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="reId" useGeneratedKeys="true">
+        insert into remark(su_id, wo_id, re_content, re_time, re_state)
+        values (#{suId}, #{woId}, #{reContent}, #{reTime}, #{reState})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="reId" useGeneratedKeys="true">
+        insert into remark(su_id, wo_id, re_content, re_time, re_state)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.suId}, #{entity.woId}, #{entity.reContent}, #{entity.reTime}, #{entity.reState})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="reId" useGeneratedKeys="true">
+        insert into remark(su_id, wo_id, re_content, re_time, re_state)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.suId}, #{entity.woId}, #{entity.reContent}, #{entity.reTime}, #{entity.reState})
+        </foreach>
+        on duplicate key update
+        su_id = values(su_id),
+        wo_id = values(wo_id),
+        re_content = values(re_content),
+        re_time = values(re_time),
+        re_state = values(re_state)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update remark
+        <set>
+            <if test="suId != null">
+                su_id = #{suId},
+            </if>
+            <if test="woId != null">
+                wo_id = #{woId},
+            </if>
+            <if test="reContent != null and reContent != ''">
+                re_content = #{reContent},
+            </if>
+            <if test="reTime != null">
+                re_time = #{reTime},
+            </if>
+            <if test="reState != null">
+                re_state = #{reState},
+            </if>
+        </set>
+        where re_id = #{reId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from remark where re_id = #{reId}
+    </delete>
+
+</mapper>
+

@@ -1,0 +1,10 @@
+### 消费者
+GET http://localhost:8084/con/test?message=Hello
+
+### 网关
+GET http://localhost:8080/consumer-service/con/test?message=Hello
+
+### 网关-年龄
+GET http://localhost:8080/con/age?age=18
+
+

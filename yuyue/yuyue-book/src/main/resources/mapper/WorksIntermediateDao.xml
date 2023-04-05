@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trkj.yuyuebook.dao.WorksIntermediateDao">
+
+    <resultMap type="com.trkj.yuyuebook.entity.WorksIntermediateEntity" id="WorksIntermediateEntityMap">
+        <result property="wiId" column="wi_id" jdbcType="INTEGER"/>
+        <result property="woId" column="wo_id" jdbcType="INTEGER"/>
+        <result property="wtId" column="wt_id" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="WorksIntermediateEntityMap">
+        select
+          wi_id, wo_id, wt_id
+        from works_intermediate
+        where wi_id = #{wiId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAll" resultMap="WorksIntermediateEntityMap">
+        select
+          wi_id, wo_id, wt_id
+        from works_intermediate
+        <where>
+            <if test="wiId != null">
+                and wi_id = #{wiId}
+            </if>
+            <if test="woId != null">
+                and wo_id = #{woId}
+            </if>
+            <if test="wtId != null">
+                and wt_id = #{wtId}
+            </if>
+        </where>
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from works_intermediate
+        <where>
+            <if test="wiId != null">
+                and wi_id = #{wiId}
+            </if>
+            <if test="woId != null">
+                and wo_id = #{woId}
+            </if>
+            <if test="wtId != null">
+                and wt_id = #{wtId}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="wiId" useGeneratedKeys="true">
+        insert into works_intermediate(wo_id, wt_id)
+        values (#{woId}, #{wtId})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="wiId" useGeneratedKeys="true">
+        insert into works_intermediate(wo_id, wt_id)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.woId}, #{entity.wtId})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="wiId" useGeneratedKeys="true">
+        insert into works_intermediate(wo_id, wt_id)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.woId}, #{entity.wtId})
+        </foreach>
+        on duplicate key update
+        wo_id = values(wo_id),
+        wt_id = values(wt_id)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update works_intermediate
+        <set>
+            <if test="woId != null">
+                wo_id = #{woId},
+            </if>
+            <if test="wtId != null">
+                wt_id = #{wtId},
+            </if>
+        </set>
+        where wi_id = #{wiId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from works_intermediate where wi_id = #{wiId}
+    </delete>
+
+</mapper>
+

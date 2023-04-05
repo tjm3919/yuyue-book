@@ -1,0 +1,109 @@
+# 应用名称
+#springboot监控Actuator,暴露所有端点
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    jmx:
+      exposure:
+        include: '*'
+    web:
+      exposure:
+        include: '*'
+  server:
+    port: 8001
+server:
+  port: 8000
+spring:
+  application:
+    name: yuyue-gateway
+  cloud:
+    nacos:
+      discovery:
+        namespace: 3399f824-3168-435e-a977-d15ab7fb2bcd
+        password: nacos
+        server-addr: 127.0.0.1:8848
+        username: nacos
+    gateway:
+      discovery:
+        locator:
+          enabled: true # 启动动态路由，也就是说网关现在会根据服务名去找到对应的服务
+      routes:
+        # 登录jwt
+        - id: yuyue-jwt
+          #目标服务地址(uri：地址,请求转发后的地址),会自动从注册中心获得服务的IP,不需要手动写死
+          uri: lb://yuyue-jwt
+          #优先级,越小越优先
+          order: 1
+          #路由条件(predicates：断言)
+          predicates:
+            # 路径匹配
+            - Path=/jwt/**
+        # 日志
+        - id: yuyue-log
+          uri: lb://yuyue-log
+          order: 2
+          predicates:
+            - Path=/loginLog/**
+
+        - id: yuyue-message
+          uri: lb://yuyue-message
+          order: 2
+          predicates:
+            - Path=/message/**
+
+        - id: yuyue-book
+          uri: lb://yuyue-book
+          order: 2
+          predicates:
+            # 只有2.1.0以上的版本才会允许配置多个Path=/test/t1,/testw/t2,y用逗号隔开的路径
+            - Path=/works/**,/worksContent/**,/worksIntermediate/**,/subscription/**
+
+        - id: yuyue-remark
+          uri: lb://yuyue-remark
+          order: 2
+          predicates:
+            - Path=/remark/**
+
+        - id: yuyue-user
+          uri: lb://yuyue-user
+          order: 2
+          predicates:
+            - Path=/sysUser/**
+
+        - id: yuyue-integral
+          uri: lb://yuyue-integral
+          order: 2
+          predicates:
+            - Path=/integral/**
+
+        - id: yuyue-approval
+          uri: lb://yuyue-approval
+          order: 2
+          predicates:
+            - Path=/approval/**
+
+
+#          filters:
+#            #路径前缀删除示例：请求/name/bar/foo,StripPrefix=2,去除掉前面两个前缀之后,最后转发到目标服务的路径为/foo
+#            #前缀过滤,请求地址：http://localhost:8084/usr/hello
+#            #此处配置去掉1个路径前缀,再配置上面的 Path=/usr/**,就将**转发到指定的微服务
+#            #因为这个api相当于是服务名,只是为了方便以后nginx的代码加上去的,对于服务提供者service-client来说,不需要这段地址,所以需要去掉
+#            - StripPrefix=2
+
+#logging:
+#  level:
+    #开启spring-Cloud-gateway的日志级别为debug,方便debug调试
+#    org.springframework.cloud.gateway: trace
+#    org.springframework.http.server.reactive: debug
+#    org.springframework.web.reactive: debug
+#    reactor.ipc.netty: debug
+
+#自定义配置
+#gateway:
+#  nacos:
+#    server-addr: ${spring.cloud.nacos.discovery.server-addr}
+#    # namespace: xxx-xx-xx-xx
+#    data-id: dynamic-routing.json
+#    group: DEFAULT_GROUP

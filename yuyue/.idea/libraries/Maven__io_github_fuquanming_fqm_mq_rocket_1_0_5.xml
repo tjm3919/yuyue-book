@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: io.github.fuquanming:fqm-mq-rocket:1.0.5">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../../jar/io/github/fuquanming/fqm-mq-rocket/1.0.5/fqm-mq-rocket-1.0.5.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/../../../jar/io/github/fuquanming/fqm-mq-rocket/1.0.5/fqm-mq-rocket-1.0.5-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../../../jar/io/github/fuquanming/fqm-mq-rocket/1.0.5/fqm-mq-rocket-1.0.5-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

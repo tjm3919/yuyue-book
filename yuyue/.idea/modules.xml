@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/yuyue.iml" filepath="$PROJECT_DIR$/yuyue.iml" />
+      <module fileurl="file://$PROJECT_DIR$/yuyue-api/yuyue-api.iml" filepath="$PROJECT_DIR$/yuyue-api/yuyue-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/yuyue-approval/yuyue-approval.iml" filepath="$PROJECT_DIR$/yuyue-approval/yuyue-approval.iml" />
+      <module fileurl="file://$PROJECT_DIR$/yuyue-book/yuyue-book.iml" filepath="$PROJECT_DIR$/yuyue-book/yuyue-book.iml" />
+      <module fileurl="file://$PROJECT_DIR$/yuyue-gateway/yuyue-gateway.iml" filepath="$PROJECT_DIR$/yuyue-gateway/yuyue-gateway.iml" />
+      <module fileurl="file://$PROJECT_DIR$/yuyue-integral/yuyue-integral.iml" filepath="$PROJECT_DIR$/yuyue-integral/yuyue-integral.iml" />
+      <module fileurl="file://$PROJECT_DIR$/yuyue-jwt/yuyue-jwt.iml" filepath="$PROJECT_DIR$/yuyue-jwt/yuyue-jwt.iml" />
+      <module fileurl="file://$PROJECT_DIR$/yuyue-log/yuyue-log.iml" filepath="$PROJECT_DIR$/yuyue-log/yuyue-log.iml" />
+      <module fileurl="file://$PROJECT_DIR$/yuyue-message/yuyue-message.iml" filepath="$PROJECT_DIR$/yuyue-message/yuyue-message.iml" />
+      <module fileurl="file://$PROJECT_DIR$/yuyue-redis/yuyue-redis.iml" filepath="$PROJECT_DIR$/yuyue-redis/yuyue-redis.iml" />
+      <module fileurl="file://$PROJECT_DIR$/yuyue-remark/yuyue-remark.iml" filepath="$PROJECT_DIR$/yuyue-remark/yuyue-remark.iml" />
+      <module fileurl="file://$PROJECT_DIR$/yuyue-user/yuyue-user.iml" filepath="$PROJECT_DIR$/yuyue-user/yuyue-user.iml" />
+    </modules>
+  </component>
+</project>

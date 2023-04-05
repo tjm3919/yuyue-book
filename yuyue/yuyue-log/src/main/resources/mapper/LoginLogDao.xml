@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trkj.yuyuelog.dao.LoginLogDao">
+
+    <resultMap type="com.trkj.yuyuelog.entity.LoginLogEntity" id="LoginLogEntityMap">
+        <result property="llId" column="ll_id" jdbcType="INTEGER"/>
+        <result property="suId" column="su_id" jdbcType="INTEGER"/>
+        <result property="saId" column="sa_id" jdbcType="INTEGER"/>
+        <result property="llUpTime" column="ll_up_time" jdbcType="TIMESTAMP"/>
+        <result property="llOutTime" column="ll_out_time" jdbcType="TIMESTAMP"/>
+        <result property="llIp" column="ll_ip" jdbcType="VARCHAR"/>
+        <result property="llBrowserType" column="ll_browser_type" jdbcType="VARCHAR"/>
+        <result property="llClientsideType" column="ll_clientside_type" jdbcType="VARCHAR"/>
+        <result property="llLoginType" column="ll_login_type" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="LoginLogEntityMap">
+        select
+          ll_id, su_id, sa_id, ll_up_time, ll_out_time, ll_ip, ll_browser_type, ll_clientside_type, ll_login_type
+        from login_log
+        where ll_id = #{llId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAll" resultMap="LoginLogEntityMap">
+        select
+          ll_id, su_id, sa_id, ll_up_time, ll_out_time, ll_ip, ll_browser_type, ll_clientside_type, ll_login_type
+        from login_log
+        <where>
+            <if test="llId != null">
+                and ll_id = #{llId}
+            </if>
+            <if test="suId != null">
+                and su_id = #{suId}
+            </if>
+            <if test="saId != null">
+                and sa_id = #{saId}
+            </if>
+            <if test="llUpTime != null">
+                and ll_up_time = #{llUpTime}
+            </if>
+            <if test="llOutTime != null">
+                and ll_out_time = #{llOutTime}
+            </if>
+            <if test="llIp != null and llIp != ''">
+                and ll_ip = #{llIp}
+            </if>
+            <if test="llBrowserType != null and llBrowserType != ''">
+                and ll_browser_type = #{llBrowserType}
+            </if>
+            <if test="llClientsideType != null and llClientsideType != ''">
+                and ll_clientside_type = #{llClientsideType}
+            </if>
+            <if test="llLoginType != null">
+                and ll_login_type = #{llLoginType}
+            </if>
+        </where>
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from login_log
+        <where>
+            <if test="llId != null">
+                and ll_id = #{llId}
+            </if>
+            <if test="suId != null">
+                and su_id = #{suId}
+            </if>
+            <if test="saId != null">
+                and sa_id = #{saId}
+            </if>
+            <if test="llUpTime != null">
+                and ll_up_time = #{llUpTime}
+            </if>
+            <if test="llOutTime != null">
+                and ll_out_time = #{llOutTime}
+            </if>
+            <if test="llIp != null and llIp != ''">
+                and ll_ip = #{llIp}
+            </if>
+            <if test="llBrowserType != null and llBrowserType != ''">
+                and ll_browser_type = #{llBrowserType}
+            </if>
+            <if test="llClientsideType != null and llClientsideType != ''">
+                and ll_clientside_type = #{llClientsideType}
+            </if>
+            <if test="llLoginType != null">
+                and ll_login_type = #{llLoginType}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="llId" useGeneratedKeys="true">
+        insert into login_log(su_id, sa_id, ll_up_time, ll_ip, ll_browser_type, ll_clientside_type, ll_login_type)
+        values (#{suId}, #{saId}, #{llUpTime}, #{llIp}, #{llBrowserType}, #{llClientsideType}, #{llLoginType})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="llId" useGeneratedKeys="true">
+        insert into login_log(su_id, sa_id, ll_up_time, ll_out_time, ll_ip, ll_browser_type, ll_clientside_type, ll_login_type)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.suId}, #{entity.saId}, #{entity.llUpTime}, #{entity.llOutTime}, #{entity.llIp}, #{entity.llBrowserType}, #{entity.llClientsideType}, #{entity.llLoginType})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="llId" useGeneratedKeys="true">
+        insert into login_log(su_id, sa_id, ll_up_time, ll_out_time, ll_ip, ll_browser_type, ll_clientside_type, ll_login_type)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.suId}, #{entity.saId}, #{entity.llUpTime}, #{entity.llOutTime}, #{entity.llIp}, #{entity.llBrowserType}, #{entity.llClientsideType}, #{entity.llLoginType})
+        </foreach>
+        on duplicate key update
+        su_id = values(su_id),
+        sa_id = values(sa_id),
+        ll_up_time = values(ll_up_time),
+        ll_out_time = values(ll_out_time),
+        ll_ip = values(ll_ip),
+        ll_browser_type = values(ll_browser_type),
+        ll_clientside_type = values(ll_clientside_type),
+        ll_login_type = values(ll_login_type)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update login_log
+        <set>
+            <if test="suId != null">
+                su_id = #{suId},
+            </if>
+            <if test="saId != null">
+                sa_id = #{saId},
+            </if>
+            <if test="llUpTime != null">
+                ll_up_time = #{llUpTime},
+            </if>
+            <if test="llOutTime != null">
+                ll_out_time = #{llOutTime},
+            </if>
+            <if test="llIp != null and llIp != ''">
+                ll_ip = #{llIp},
+            </if>
+            <if test="llBrowserType != null and llBrowserType != ''">
+                ll_browser_type = #{llBrowserType},
+            </if>
+            <if test="llClientsideType != null and llClientsideType != ''">
+                ll_clientside_type = #{llClientsideType},
+            </if>
+            <if test="llLoginType != null">
+                ll_login_type = #{llLoginType},
+            </if>
+        </set>
+        where ll_id = #{llId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from login_log where ll_id = #{llId}
+    </delete>
+
+    <!--根据用户id查询最后一个登录日志-->
+    <select id="queryEnd" resultMap="LoginLogEntityMap">
+        select * from login_log where sa_id=#{said} order by ll_id desc limit 1
+    </select>
+</mapper>
+

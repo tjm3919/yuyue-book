@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trkj.yuyuebook.dao.WorksDao">
+
+    <resultMap type="com.trkj.yuyuebook.entity.WorksEntity" id="WorksEntityMap2">
+        <result property="woId" column="wo_id" jdbcType="INTEGER"/>
+        <result property="woTitle" column="wo_title" jdbcType="VARCHAR"/>
+        <result property="summary" column="summary" jdbcType="VARCHAR"/>
+        <result property="suId" column="su_id" jdbcType="INTEGER"/>
+        <result property="readNum" column="read_num" jdbcType="INTEGER"/>
+        <result property="sectionNum" column="section_num" jdbcType="INTEGER"/>
+        <result property="appraiseNum" column="appraise_num" jdbcType="INTEGER"/>
+        <result property="likesNum" column="likes_num" jdbcType="INTEGER"/>
+        <result property="protagonistName" column="protagonist_name" jdbcType="VARCHAR"/>
+        <result property="supportName" column="support_name" jdbcType="VARCHAR"/>
+        <result property="worksType" column="works_type" jdbcType="VARCHAR"/>
+        <result property="worksCreateTime" column="works_create_time" jdbcType="TIMESTAMP"/>
+        <result property="boId" column="bo_id" jdbcType="INTEGER"/>
+        <result property="boIntegral" column="bo_integral" jdbcType="INTEGER"/>
+        <result property="woState" column="wo_state" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <resultMap type="com.trkj.yuyuebook.entity.WorksEntity" id="WorksEntityMap">
+        <result property="woId" column="wo_id" jdbcType="INTEGER"/>
+        <result property="woTitle" column="wo_title" jdbcType="VARCHAR"/>
+        <result property="summary" column="summary" jdbcType="VARCHAR"/>
+        <result property="suId" column="su_id" jdbcType="INTEGER"/>
+        <result property="readNum" column="read_num" jdbcType="INTEGER"/>
+        <result property="sectionNum" column="section_num" jdbcType="INTEGER"/>
+        <result property="appraiseNum" column="appraise_num" jdbcType="INTEGER"/>
+        <result property="likesNum" column="likes_num" jdbcType="INTEGER"/>
+        <result property="protagonistName" column="protagonist_name" jdbcType="VARCHAR"/>
+        <result property="supportName" column="support_name" jdbcType="VARCHAR"/>
+        <result property="worksType" column="works_type" jdbcType="VARCHAR"/>
+        <result property="worksCreateTime" column="works_create_time" jdbcType="TIMESTAMP"/>
+        <result property="boId" column="bo_id" jdbcType="INTEGER"/>
+        <result property="boIntegral" column="bo_integral" jdbcType="INTEGER"/>
+        <result property="woState" column="wo_state" jdbcType="INTEGER"/>
+        <association property="bookrackEntity" resultMap="BookrackEntityMap"/>
+        <collection property="worksTagEntity" resultMap="WorksTagEntityMap"/>
+        <collection property="worksContentEntities" resultMap="WorksContentEntityMap"/>
+    </resultMap>
+
+    <!--书籍标签-->
+    <resultMap type="com.trkj.yuyuebook.entity.WorksTagEntity" id="WorksTagEntityMap">
+        <result property="wtId" column="wt_id" jdbcType="INTEGER"/>
+        <result property="wtName" column="wt_name" jdbcType="VARCHAR"/>
+        <result property="wtCreateTime" column="wt_create_time" jdbcType="TIMESTAMP"/>
+        <result property="wtCreateBy" column="wt_create_by" jdbcType="VARCHAR"/>
+    </resultMap>
+    <!--书架表-->
+    <resultMap type="com.trkj.yuyuebook.entity.BookrackEntity" id="BookrackEntityMap">
+        <result property="boId" column="bo_id" jdbcType="INTEGER"/>
+        <result property="boCreateTime" column="bo_create_time" jdbcType="TIMESTAMP"/>
+        <result property="boCreateBy" column="bo_create_by" jdbcType="VARCHAR"/>
+        <result property="boState" column="bo_state" jdbcType="INTEGER"/>
+    </resultMap>
+    <!--章节表-->
+    <resultMap type="com.trkj.yuyuebook.entity.WorksContentEntity" id="WorksContentEntityMap">
+        <result property="wcId" column="wc_id" jdbcType="INTEGER"/>
+        <result property="wcTitle" column="wc_title" jdbcType="VARCHAR"/>
+        <result property="wcContent" column="wc_content" jdbcType="VARCHAR"/>
+        <result property="woId" column="wo_id" jdbcType="INTEGER"/>
+        <result property="wcCreateTime" column="wc_create_time" jdbcType="TIMESTAMP"/>
+        <result property="wcUpdateEndtime" column="wc_update_endtime" jdbcType="TIMESTAMP"/>
+        <result property="wcFinalizeTime" column="wc_finalize_time" jdbcType="TIMESTAMP"/>
+        <result property="wcChapterHits" column="wc_chapter_hits" jdbcType="INTEGER"/>
+        <result property="wcState" column="wc_state" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="WorksEntityMap">
+        select * from works w
+            left join works_content wc on w.wo_id=wc.wo_id
+            left join bookrack b on w.bo_id = b.bo_id
+            left join works_intermediate wi on w.wo_id=wi.wo_id
+            left join works_tag wt on wi.wt_id = wt.wt_id
+        where w.wo_id = #{woId} and w.wo_state=1
+    </select>
+<!--wo_id, wo_title, summary, su_id, read_num, section_num, appraise_num, likes_num, protagonist_name, support_name, works_type, works_create_time, bo_id-->
+    <!--查询指定行数据-->
+    <select id="queryAll" resultMap="WorksEntityMap">
+        select * from works w
+        left join works_content wc on w.wo_id=wc.wo_id
+        left join bookrack b on w.bo_id = b.bo_id
+        left join works_intermediate wi on w.wo_id=wi.wo_id
+        left join works_tag wt on wi.wt_id = wt.wt_id
+        <where>
+            <if test="woId != null">
+                and w.wo_id = #{woId}
+            </if>
+            <if test="woTitle != null and woTitle != ''">
+                and w.wo_title = #{woTitle}
+            </if>
+            <if test="summary != null and summary != ''">
+                and w.summary = #{summary}
+            </if>
+            <if test="suId != null">
+                and w.su_id = #{suId}
+            </if>
+            <if test="readNum != null">
+                and w.read_num = #{readNum}
+            </if>
+            <if test="sectionNum != null">
+                and w.section_num = #{sectionNum}
+            </if>
+            <if test="appraiseNum != null">
+                and w.appraise_num = #{appraiseNum}
+            </if>
+            <if test="likesNum != null">
+                and w.likes_num = #{likesNum}
+            </if>
+            <if test="protagonistName != null and protagonistName != ''">
+                and w.protagonist_name = #{protagonistName}
+            </if>
+            <if test="supportName != null and supportName != ''">
+                and w.support_name = #{supportName}
+            </if>
+            <if test="worksType != null and worksType != ''">
+                and w.works_type = #{worksType}
+            </if>
+            <if test="worksCreateTime != null">
+                and w.works_create_time = #{worksCreateTime}
+            </if>
+            <if test="boId != null">
+                and w.bo_id = #{boId}
+            </if>
+            <if test="boIntegral != null">
+                and w.bo_integral = #{boIntegral}
+            </if>
+            <if test="woState != null">
+                and w.wo_state = #{woState}
+            </if>
+        </where>
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from works
+        <where>
+            <if test="woId != null">
+                and wo_id = #{woId}
+            </if>
+            <if test="woTitle != null and woTitle != ''">
+                and wo_title = #{woTitle}
+            </if>
+            <if test="summary != null and summary != ''">
+                and summary = #{summary}
+            </if>
+            <if test="suId != null">
+                and su_id = #{suId}
+            </if>
+            <if test="readNum != null">
+                and read_num = #{readNum}
+            </if>
+            <if test="sectionNum != null">
+                and section_num = #{sectionNum}
+            </if>
+            <if test="appraiseNum != null">
+                and appraise_num = #{appraiseNum}
+            </if>
+            <if test="likesNum != null">
+                and likes_num = #{likesNum}
+            </if>
+            <if test="protagonistName != null and protagonistName != ''">
+                and protagonist_name = #{protagonistName}
+            </if>
+            <if test="supportName != null and supportName != ''">
+                and support_name = #{supportName}
+            </if>
+            <if test="worksType != null and worksType != ''">
+                and works_type = #{worksType}
+            </if>
+            <if test="worksCreateTime != null">
+                and works_create_time = #{worksCreateTime}
+            </if>
+            <if test="boId != null">
+                and bo_id = #{boId}
+            </if>
+            <if test="boIntegral != null">
+                and bo_integral = #{boIntegral}
+            </if>
+            <if test="woState != null">
+                and wo_state = #{woState}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="woId" useGeneratedKeys="true">
+        insert into works(wo_title, summary, su_id, read_num, section_num, appraise_num, likes_num, protagonist_name, support_name, works_type, works_create_time, bo_id,bo_integral,wo_state)
+        values (#{woTitle}, #{summary}, #{suId}, #{readNum}, #{sectionNum}, #{appraiseNum}, #{likesNum}, #{protagonistName}, #{supportName}, #{worksType}, #{worksCreateTime}, #{boId}, #{boIntegral}, #{woState})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="woId" useGeneratedKeys="true">
+        insert into works(wo_title, summary, su_id, read_num, section_num, appraise_num, likes_num, protagonist_name, support_name, works_type, works_create_time, bo_id,bo_integral,wo_state)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.woTitle}, #{entity.summary}, #{entity.suId}, #{entity.readNum}, #{entity.sectionNum}, #{entity.appraiseNum}, #{entity.likesNum}, #{entity.protagonistName}, #{entity.supportName}, #{entity.worksType}, #{entity.worksCreateTime}, #{entity.boId},#{entity.boIntegral}, #{entity.woState})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="woId" useGeneratedKeys="true">
+        insert into works(wo_title, summary, su_id, read_num, section_num, appraise_num, likes_num, protagonist_name, support_name, works_type, works_create_time, bo_id, bo_integral, wo_state)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.woTitle}, #{entity.summary}, #{entity.suId}, #{entity.readNum}, #{entity.sectionNum}, #{entity.appraiseNum}, #{entity.likesNum}, #{entity.protagonistName}, #{entity.supportName}, #{entity.worksType}, #{entity.worksCreateTime}, #{entity.boId}, #{entity.boIntegral}, #{entity.woState})
+        </foreach>
+        on duplicate key update
+        wo_title = values(wo_title),
+        summary = values(summary),
+        su_id = values(su_id),
+        read_num = values(read_num),
+        section_num = values(section_num),
+        appraise_num = values(appraise_num),
+        likes_num = values(likes_num),
+        protagonist_name = values(protagonist_name),
+        support_name = values(support_name),
+        works_type = values(works_type),
+        works_create_time = values(works_create_time),
+        bo_id = values(bo_id),
+        bo_integral = values(bo_integral),
+        wo_state = values(wo_state)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update works
+        <set>
+            <if test="woTitle != null and woTitle != ''">
+                wo_title = #{woTitle},
+            </if>
+            <if test="summary != null and summary != ''">
+                summary = #{summary},
+            </if>
+            <if test="suId != null">
+                su_id = #{suId},
+            </if>
+            <if test="readNum != null">
+                read_num = #{readNum},
+            </if>
+            <if test="sectionNum != null">
+                section_num = #{sectionNum},
+            </if>
+            <if test="appraiseNum != null">
+                appraise_num = #{appraiseNum},
+            </if>
+            <if test="likesNum != null">
+                likes_num = #{likesNum},
+            </if>
+            <if test="protagonistName != null and protagonistName != ''">
+                protagonist_name = #{protagonistName},
+            </if>
+            <if test="supportName != null and supportName != ''">
+                support_name = #{supportName},
+            </if>
+            <if test="worksType != null and worksType != ''">
+                works_type = #{worksType},
+            </if>
+            <if test="worksCreateTime != null">
+                works_create_time = #{worksCreateTime},
+            </if>
+            <if test="boId != null">
+                bo_id = #{boId},
+            </if>
+            <if test="boIntegral != null">
+                bo_integral = #{boIntegral},
+            </if>
+            <if test="woState != null">
+                wo_state = #{woState}
+            </if>
+        </set>
+        where wo_id = #{woId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from works where wo_id = #{woId}
+    </delete>
+
+    <!--通过主键删除标签-->
+    <delete id="deleteTagById">
+        delete works_intermediate where wo_id = #{woId}
+    </delete>
+
+    <select id="queryTagById">
+        select w.wo_id,w.wo_title,wt.wt_id,wt.wt_name from works_intermediate wi
+            left join works_tag wt on wi.wt_id = wt.wt_id
+            left join works w on wi.wo_id = w.wo_id  order by w.wo_id
+    </select>
+
+    <!--查询订阅前十的书-->
+    <select id="queryByTopten" resultMap="WorksEntityMap2">
+        select * from works where wo_state=1 order by read_num desc limit 10
+    </select>
+
+    <!--根据图书类型和主角配角名查询-->
+    <select id="queryByType" resultMap="WorksEntityMap2">
+        select * from works
+        <trim prefix="WHERE" prefixOverrides="and | or">
+            <if test="worksType != null and worksType != ''">
+                and works_type like concat(concat('%',#{worksType}),'%')
+            </if>
+            <if test="protagonistName != null and protagonistName != ''">
+                and protagonist_name like concat(concat('%',#{protagonistName}),'%')
+            </if>
+            <if test="supportName != null and supportName != ''">
+                and support_name like concat(concat('%',#{supportName}),'%')
+            </if>
+        </trim>
+    </select>
+</mapper>
+

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trkj.yuyueapproval.dao.ApprovalDao">
+
+    <resultMap type="com.trkj.yuyueapproval.entity.ApprovalEntity" id="ApprovalEntityMap">
+        <result property="apId" column="ap_id" jdbcType="INTEGER"/>
+        <result property="sysId" column="sys_id" jdbcType="INTEGER"/>
+        <result property="saId" column="sa_id" jdbcType="INTEGER"/>
+        <result property="suId" column="su_id" jdbcType="INTEGER"/>
+        <result property="apEvent" column="ap_event" jdbcType="VARCHAR"/>
+        <result property="apState" column="ap_state" jdbcType="INTEGER"/>
+        <result property="apTime" column="ap_time" jdbcType="TIMESTAMP"/>
+        <result property="apType" column="ap_type" jdbcType="VARCHAR"/>
+        <result property="apCause" column="ap_cause" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="ApprovalEntityMap">
+        select
+          ap_id, sys_id, sa_id, su_id, ap_event, ap_state, ap_time, ap_type, ap_cause
+        from approval
+        where ap_id = #{apId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAll" resultMap="ApprovalEntityMap">
+        select
+          ap_id, sys_id, sa_id, su_id, ap_event, ap_state, ap_time, ap_type, ap_cause
+        from approval
+        <where>
+            <if test="apId != null">
+                and ap_id = #{apId}
+            </if>
+            <if test="sysId != null">
+                and sys_id = #{sysId}
+            </if>
+            <if test="saId != null">
+                and sa_id = #{saId}
+            </if>
+            <if test="suId != null">
+                and su_id = #{suId}
+            </if>
+            <if test="apEvent != null and apEvent != ''">
+                and ap_event = #{apEvent}
+            </if>
+            <if test="apState != null">
+                and ap_state = #{apState}
+            </if>
+            <if test="apTime != null">
+                and ap_time = #{apTime}
+            </if>
+            <if test="apType != null and apType != ''">
+                and ap_type = #{apType}
+            </if>
+            <if test="apCause != null and apCause != ''">
+                and ap_cause = #{apCause}
+            </if>
+        </where>
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from approval
+        <where>
+            <if test="apId != null">
+                and ap_id = #{apId}
+            </if>
+            <if test="sysId != null">
+                and sys_id = #{sysId}
+            </if>
+            <if test="saId != null">
+                and sa_id = #{saId}
+            </if>
+            <if test="suId != null">
+                and su_id = #{suId}
+            </if>
+            <if test="apEvent != null and apEvent != ''">
+                and ap_event = #{apEvent}
+            </if>
+            <if test="apState != null">
+                and ap_state = #{apState}
+            </if>
+            <if test="apTime != null">
+                and ap_time = #{apTime}
+            </if>
+            <if test="apType != null and apType != ''">
+                and ap_type = #{apType}
+            </if>
+            <if test="apCause != null and apCause != ''">
+                and ap_cause = #{apCause}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="apId" useGeneratedKeys="true">
+        insert into approval(sys_id, sa_id, su_id, ap_event, ap_state, ap_time, ap_type, ap_cause)
+        values (#{sysId}, #{saId}, #{suId}, #{apEvent}, #{apState}, #{apTime}, #{apType}, #{apCause})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="apId" useGeneratedKeys="true">
+        insert into approval(sys_id, sa_id, su_id, ap_event, ap_state, ap_time, ap_type, ap_cause)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.sysId}, #{entity.saId}, #{entity.suId}, #{entity.apEvent}, #{entity.apState}, #{entity.apTime}, #{entity.apType}, #{entity.apCause})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="apId" useGeneratedKeys="true">
+        insert into approval(sys_id, sa_id, su_id, ap_event, ap_state, ap_time, ap_type, ap_cause)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.sysId}, #{entity.saId}, #{entity.suId}, #{entity.apEvent}, #{entity.apState}, #{entity.apTime}, #{entity.apType}, #{entity.apCause})
+        </foreach>
+        on duplicate key update
+        sys_id = values(sys_id),
+        sa_id = values(sa_id),
+        su_id = values(su_id),
+        ap_event = values(ap_event),
+        ap_state = values(ap_state),
+        ap_time = values(ap_time),
+        ap_type = values(ap_type),
+        ap_cause = values(ap_cause)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update approval
+        <set>
+            <if test="sysId != null">
+                sys_id = #{sysId},
+            </if>
+            <if test="saId != null">
+                sa_id = #{saId},
+            </if>
+            <if test="suId != null">
+                su_id = #{suId},
+            </if>
+            <if test="apEvent != null and apEvent != ''">
+                ap_event = #{apEvent},
+            </if>
+            <if test="apState != null">
+                ap_state = #{apState},
+            </if>
+            <if test="apTime != null">
+                ap_time = #{apTime},
+            </if>
+            <if test="apType != null and apType != ''">
+                ap_type = #{apType},
+            </if>
+            <if test="apCause != null and apCause != ''">
+                ap_cause = #{apCause},
+            </if>
+        </set>
+        where ap_id = #{apId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from approval where ap_id = #{apId}
+    </delete>
+
+</mapper>
+

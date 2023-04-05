@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trkj.yuyueintegral.dao.IntegralDao">
+
+    <resultMap type="com.trkj.yuyueintegral.entity.IntegralEntity" id="IntegralEntityMap">
+        <result property="inId" column="in_id" jdbcType="INTEGER"/>
+        <result property="suId" column="su_id" jdbcType="INTEGER"/>
+        <result property="amType" column="am_type" jdbcType="VARCHAR"/>
+        <result property="amNum" column="am_num" jdbcType="INTEGER"/>
+        <result property="sysId" column="sys_id" jdbcType="INTEGER"/>
+        <result property="woId" column="wo_id" jdbcType="INTEGER"/>
+        <result property="inCreateTime" column="in_create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="IntegralEntityMap">
+        select
+          in_id, su_id, am_type, am_num, sys_id, wo_id, in_create_time
+        from integral
+        where in_id = #{inId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAll" resultMap="IntegralEntityMap">
+        select
+          in_id, su_id, am_type, am_num, sys_id, wo_id, in_create_time
+        from integral
+        <where>
+            <if test="inId != null">
+                and in_id = #{inId}
+            </if>
+            <if test="suId != null">
+                and su_id = #{suId}
+            </if>
+            <if test="amType != null and amType != ''">
+                and am_type = #{amType}
+            </if>
+            <if test="amNum != null">
+                and am_num = #{amNum}
+            </if>
+            <if test="sysId != null">
+                and sys_id = #{sysId}
+            </if>
+            <if test="woId != null">
+                and wo_id = #{woId}
+            </if>
+            <if test="inCreateTime != null">
+                and in_create_time = #{inCreateTime}
+            </if>
+        </where>
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from integral
+        <where>
+            <if test="inId != null">
+                and in_id = #{inId}
+            </if>
+            <if test="suId != null">
+                and su_id = #{suId}
+            </if>
+            <if test="amType != null and amType != ''">
+                and am_type = #{amType}
+            </if>
+            <if test="amNum != null">
+                and am_num = #{amNum}
+            </if>
+            <if test="sysId != null">
+                and sys_id = #{sysId}
+            </if>
+            <if test="woId != null">
+                and wo_id = #{woId}
+            </if>
+            <if test="inCreateTime != null">
+                and in_create_time = #{inCreateTime}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="inId" useGeneratedKeys="true">
+        insert into integral(su_id, am_type, am_num, sys_id, wo_id, in_create_time)
+        values (#{suId}, #{amType}, #{amNum}, #{sysId}, #{woId}, #{inCreateTime})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="inId" useGeneratedKeys="true">
+        insert into integral(su_id, am_type, am_num, sys_id, wo_id, in_create_time)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.suId}, #{entity.amType}, #{entity.amNum}, #{entity.sysId}, #{entity.woId}, #{entity.inCreateTime})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="inId" useGeneratedKeys="true">
+        insert into integral(su_id, am_type, am_num, sys_id, wo_id, in_create_time)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.suId}, #{entity.amType}, #{entity.amNum}, #{entity.sysId}, #{entity.woId}, #{entity.inCreateTime})
+        </foreach>
+        on duplicate key update
+        su_id = values(su_id),
+        am_type = values(am_type),
+        am_num = values(am_num),
+        sys_id = values(sys_id),
+        wo_id = values(wo_id),
+        in_create_time = values(in_create_time)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update integral
+        <set>
+            <if test="suId != null">
+                su_id = #{suId},
+            </if>
+            <if test="amType != null and amType != ''">
+                am_type = #{amType},
+            </if>
+            <if test="amNum != null">
+                am_num = #{amNum},
+            </if>
+            <if test="sysId != null">
+                sys_id = #{sysId},
+            </if>
+            <if test="woId != null">
+                wo_id = #{woId},
+            </if>
+            <if test="inCreateTime != null">
+                in_create_time = #{inCreateTime},
+            </if>
+        </set>
+        where in_id = #{inId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from integral where in_id = #{inId}
+    </delete>
+
+</mapper>
+

@@ -1,0 +1,21 @@
+### 新增消息
+POST http://localhost:8088/message/add?said=1001
+Content-Type: application/json
+jwttoken: {{token}}
+
+{
+  "sysId": 1,
+  "meContent": "消息内容",
+  "sendTime": "2023-2-9 08:32:22",
+  "suId": 3,
+  "meState": 1
+}
+
+### 消息分页查询 meState(0-删除 1-未接收 2-已接收)
+GET http://localhost:8088/message/queryByPage?currentPage=1&pageSize=10&said=1001
+Content-Type: application/json
+jwttoken: {{token}}
+
+{
+  "meState": 1
+}

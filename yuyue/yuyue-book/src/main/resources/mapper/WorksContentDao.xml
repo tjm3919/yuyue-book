@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trkj.yuyuebook.dao.WorksContentDao">
+
+    <resultMap type="com.trkj.yuyuebook.entity.WorksContentEntity" id="WorksContentEntityMap">
+        <result property="wcId" column="wc_id" jdbcType="INTEGER"/>
+        <result property="wcTitle" column="wc_title" jdbcType="VARCHAR"/>
+        <result property="wcContent" column="wc_content" jdbcType="VARCHAR"/>
+        <result property="woId" column="wo_id" jdbcType="INTEGER"/>
+        <result property="wcCreateTime" column="wc_create_time" jdbcType="TIMESTAMP"/>
+        <result property="wcUpdateEndtime" column="wc_update_endtime" jdbcType="TIMESTAMP"/>
+        <result property="wcFinalizeTime" column="wc_finalize_time" jdbcType="TIMESTAMP"/>
+        <result property="wcChapterHits" column="wc_chapter_hits" jdbcType="INTEGER"/>
+        <result property="wcState" column="wc_state" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="WorksContentEntityMap">
+        select
+          wc_id, wc_title, wc_content, wo_id, wc_create_time, wc_update_endtime, wc_finalize_time, wc_chapter_hits, wc_state
+        from works_content
+        where wc_id = #{wcId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAll" resultMap="WorksContentEntityMap">
+        select
+          wc_id, wc_title, wc_content, wo_id, wc_create_time, wc_update_endtime, wc_finalize_time, wc_chapter_hits, wc_state
+        from works_content
+        <where>
+            <if test="wcId != null">
+                and wc_id = #{wcId}
+            </if>
+            <if test="wcTitle != null and wcTitle != ''">
+                and wc_title = #{wcTitle}
+            </if>
+            <if test="wcContent != null and wcContent != ''">
+                and wc_content = #{wcContent}
+            </if>
+            <if test="woId != null">
+                and wo_id = #{woId}
+            </if>
+            <if test="wcCreateTime != null">
+                and wc_create_time = #{wcCreateTime}
+            </if>
+            <if test="wcUpdateEndtime != null">
+                and wc_update_endtime = #{wcUpdateEndtime}
+            </if>
+            <if test="wcFinalizeTime != null">
+                and wc_finalize_time = #{wcFinalizeTime}
+            </if>
+            <if test="wcChapterHits != null">
+                and wc_chapter_hits = #{wcChapterHits}
+            </if>
+            <if test="wcState != null">
+                and wc_state = #{wcState}
+            </if>
+        </where>
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from works_content
+        <where>
+            <if test="wcId != null">
+                and wc_id = #{wcId}
+            </if>
+            <if test="wcTitle != null and wcTitle != ''">
+                and wc_title = #{wcTitle}
+            </if>
+            <if test="wcContent != null and wcContent != ''">
+                and wc_content = #{wcContent}
+            </if>
+            <if test="woId != null">
+                and wo_id = #{woId}
+            </if>
+            <if test="wcCreateTime != null">
+                and wc_create_time = #{wcCreateTime}
+            </if>
+            <if test="wcUpdateEndtime != null">
+                and wc_update_endtime = #{wcUpdateEndtime}
+            </if>
+            <if test="wcFinalizeTime != null">
+                and wc_finalize_time = #{wcFinalizeTime}
+            </if>
+            <if test="wcChapterHits != null">
+                and wc_chapter_hits = #{wcChapterHits}
+            </if>
+            <if test="wcState != null">
+                and wc_state = #{wcState}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="wcId" useGeneratedKeys="true">
+        insert into works_content(wc_title, wc_content, wo_id, wc_create_time, wc_update_endtime, wc_finalize_time, wc_chapter_hits, wc_state)
+        values (#{wcTitle}, #{wcContent}, #{woId}, #{wcCreateTime}, #{wcUpdateEndtime}, #{wcFinalizeTime}, #{wcChapterHits}, #{wcState})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="wcId" useGeneratedKeys="true">
+        insert into works_content(wc_title, wc_content, wo_id, wc_create_time, wc_update_endtime, wc_finalize_time, wc_chapter_hits, wc_state)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.wcTitle}, #{entity.wcContent}, #{entity.woId}, #{entity.wcCreateTime}, #{entity.wcUpdateEndtime}, #{entity.wcFinalizeTime}, #{entity.wcChapterHits}, #{entity.wcState})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="wcId" useGeneratedKeys="true">
+        insert into works_content(wc_title, wc_content, wo_id, wc_create_time, wc_update_endtime, wc_finalize_time, wc_chapter_hits, wc_state)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.wcTitle}, #{entity.wcContent}, #{entity.woId}, #{entity.wcCreateTime}, #{entity.wcUpdateEndtime}, #{entity.wcFinalizeTime}, #{entity.wcChapterHits}, #{entity.wcState})
+        </foreach>
+        on duplicate key update
+        wc_title = values(wc_title),
+        wc_content = values(wc_content),
+        wo_id = values(wo_id),
+        wc_create_time = values(wc_create_time),
+        wc_update_endtime = values(wc_update_endtime),
+        wc_finalize_time = values(wc_finalize_time),
+        wc_chapter_hits = values(wc_chapter_hits),
+        wc_state = values(wc_state)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update works_content
+        <set>
+            <if test="wcTitle != null and wcTitle != ''">
+                wc_title = #{wcTitle},
+            </if>
+            <if test="wcContent != null and wcContent != ''">
+                wc_content = #{wcContent},
+            </if>
+            <if test="woId != null">
+                wo_id = #{woId},
+            </if>
+            <if test="wcCreateTime != null">
+                wc_create_time = #{wcCreateTime},
+            </if>
+            <if test="wcUpdateEndtime != null">
+                wc_update_endtime = #{wcUpdateEndtime},
+            </if>
+            <if test="wcFinalizeTime != null">
+                wc_finalize_time = #{wcFinalizeTime},
+            </if>
+            <if test="wcChapterHits != null">
+                wc_chapter_hits = #{wcChapterHits},
+            </if>
+            <if test="wcState != null">
+                wc_state = #{wcState},
+            </if>
+        </set>
+        where wc_id = #{wcId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from works_content where wc_id = #{wcId}
+    </delete>
+
+</mapper>
+

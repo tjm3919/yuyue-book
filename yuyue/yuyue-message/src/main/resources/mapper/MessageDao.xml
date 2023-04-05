@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trkj.yuyuemessage.dao.MessageDao">
+
+    <resultMap type="com.trkj.yuyuemessage.entity.MessageEntity" id="MessageEntityMap">
+        <result property="meId" column="me_id" jdbcType="INTEGER"/>
+        <result property="sysId" column="sys_id" jdbcType="INTEGER"/>
+        <result property="meContent" column="me_content" jdbcType="VARCHAR"/>
+        <result property="sendTime" column="send_time" jdbcType="TIMESTAMP"/>
+        <result property="suId" column="su_id" jdbcType="INTEGER"/>
+        <result property="meState" column="me_state" jdbcType="INTEGER"/>
+        <result property="receiptTime" column="receipt_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="MessageEntityMap">
+        select
+          me_id, sys_id, me_content, send_time, su_id, me_state, receipt_time
+        from message
+        where me_id = #{meId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAll" resultMap="MessageEntityMap">
+        select
+          me_id, sys_id, me_content, send_time, su_id, me_state, receipt_time
+        from message
+        <where>
+            <if test="meId != null">
+                and me_id = #{meId}
+            </if>
+            <if test="sysId != null">
+                and sys_id = #{sysId}
+            </if>
+            <if test="meContent != null and meContent != ''">
+                and me_content = #{meContent}
+            </if>
+            <if test="sendTime != null">
+                and send_time = #{sendTime}
+            </if>
+            <if test="suId != null">
+                and su_id = #{suId}
+            </if>
+            <if test="meState != null">
+                and me_state = #{meState}
+            </if>
+            <if test="receiptTime != null">
+                and receipt_time = #{receiptTime}
+            </if>
+        </where>
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from message
+        <where>
+            <if test="meId != null">
+                and me_id = #{meId}
+            </if>
+            <if test="sysId != null">
+                and sys_id = #{sysId}
+            </if>
+            <if test="meContent != null and meContent != ''">
+                and me_content = #{meContent}
+            </if>
+            <if test="sendTime != null">
+                and send_time = #{sendTime}
+            </if>
+            <if test="suId != null">
+                and su_id = #{suId}
+            </if>
+            <if test="meState != null">
+                and me_state = #{meState}
+            </if>
+            <if test="receiptTime != null">
+                and receipt_time = #{receiptTime}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="meId" useGeneratedKeys="true">
+        insert into message(sys_id, me_content, send_time, su_id, me_state, receipt_time)
+        values (#{sysId}, #{meContent}, #{sendTime}, #{suId}, #{meState}, #{receiptTime})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="meId" useGeneratedKeys="true">
+        insert into message(sys_id, me_content, send_time, su_id, me_state, receipt_time)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.sysId}, #{entity.meContent}, #{entity.sendTime}, #{entity.suId}, #{entity.meState}, #{entity.receiptTime})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="meId" useGeneratedKeys="true">
+        insert into message(sys_id, me_content, send_time, su_id, me_state, receipt_time)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.sysId}, #{entity.meContent}, #{entity.sendTime}, #{entity.suId}, #{entity.meState}, #{entity.receiptTime})
+        </foreach>
+        on duplicate key update
+        sys_id = values(sys_id),
+        me_content = values(me_content),
+        send_time = values(send_time),
+        su_id = values(su_id),
+        me_state = values(me_state),
+        receipt_time = values(receipt_time)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update message
+        <set>
+            <if test="sysId != null">
+                sys_id = #{sysId},
+            </if>
+            <if test="meContent != null and meContent != ''">
+                me_content = #{meContent},
+            </if>
+            <if test="sendTime != null">
+                send_time = #{sendTime},
+            </if>
+            <if test="suId != null">
+                su_id = #{suId},
+            </if>
+            <if test="meState != null">
+                me_state = #{meState},
+            </if>
+            <if test="receiptTime != null">
+                receipt_time = #{receiptTime},
+            </if>
+        </set>
+        where me_id = #{meId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from message where me_id = #{meId}
+    </delete>
+
+</mapper>
+

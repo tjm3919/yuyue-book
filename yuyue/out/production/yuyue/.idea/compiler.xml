@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="yuyue-message" />
+        <module name="yuyue-gateway" />
+        <module name="yuyue-remark" />
+        <module name="yuyue-integral" />
+        <module name="yuyue-log" />
+        <module name="yuyue-user" />
+        <module name="yuyue-jwt" />
+        <module name="yuyue-api" />
+        <module name="yuyue-approval" />
+        <module name="yuyue-redis" />
+        <module name="yuyue-book" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="yuyue-api" target="1.8" />
+      <module name="yuyue-approval" target="1.8" />
+      <module name="yuyue-book" target="1.8" />
+      <module name="yuyue-gateway" target="1.8" />
+      <module name="yuyue-integral" target="1.8" />
+      <module name="yuyue-jwt" target="1.8" />
+      <module name="yuyue-log" target="1.8" />
+      <module name="yuyue-message" target="1.8" />
+      <module name="yuyue-mq-impl" target="1.8" />
+      <module name="yuyue-redis" target="1.8" />
+      <module name="yuyue-remark" target="1.8" />
+      <module name="yuyue-user" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="yuyue-api" options="" />
+      <module name="yuyue-book" options="" />
+      <module name="yuyue-gateway" options="-parameters" />
+      <module name="yuyue-jwt" options="" />
+      <module name="yuyue-log" options="" />
+      <module name="yuyue-message" options="" />
+      <module name="yuyue-redis" options="" />
+    </option>
+  </component>
+</project>

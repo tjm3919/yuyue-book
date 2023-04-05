@@ -1,0 +1,27 @@
+### 新增评论
+POST http://localhost:8110/remark/add?said=1001
+Content-Type: application/json
+jwttoken: {{token}}
+
+{
+  "suId": 1,
+  "woId": 1,
+  "reContent": "评论内容",
+  "reState": 1
+}
+
+### 根评论id删除评论
+DELETE http://localhost:8110/remark/deleteById/13?said=1001
+jwttoken: {{token}}
+
+
+### 评论分页查询
+GET http://localhost:8110/remark/queryByPage?currentPage=1&pageSize=10&said=1001
+Content-Type: application/json
+jwttoken: {{token}}
+
+{
+  "suId": 1,
+  "woId": 1,
+  "reState": 1
+}
